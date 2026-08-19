@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  EDIT: Browser tab title
+  ============================================================ -->
+<title>Portfolio — Nami Furukawa</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* =============================================================
+   DESIGN SYSTEM — shared with index-simple.html, keep in sync
+   ============================================================= */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Color */
+    --bg:      #FFFFFF;
+    --ink:     #0F0F0F;
+    --ink2:    #4A4A4A;
+    --ink3:    #9A9A9A;
+    --line:    #E8E8E8;
+    --accent:  #C0392B;
+
+    /* Type families — headers in Fraunces (serif), body in Public Sans */
+    --serif: 'Fraunces', Georgia, serif;
+    --sans:  'Public Sans', system-ui, -apple-system, sans-serif;
+
+    /* Type scale — nothing sits below 14px except --fs-caption,
+       which is reserved for short, Title Case labels (eyebrows,
+       tags, badges) — never for sentences or UI copy. */
+    --fs-caption:  12px;
+    --fs-ui:       14px;
+    --fs-body:     15px;
+    --fs-title-sm: 19px;
+    --fs-title-md: 21px;
+    --fs-title-lg: clamp(2rem, 3.5vw, 2.75rem);
+
+    /* Spacing scale — used for layout rhythm across both pages */
+    --sp-1: 0.375rem;  /* 6px  */
+    --sp-2: 0.5rem;    /* 8px  */
+    --sp-3: 0.75rem;   /* 12px */
+    --sp-4: 1rem;      /* 16px */
+    --sp-5: 1.5rem;    /* 24px */
+    --sp-6: 2rem;      /* 32px */
+    --sp-7: 3rem;      /* 48px */
+    --sp-8: 4rem;      /* 64px */
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* Fade-up entrance — shared with home page */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { opacity: 0; animation: fadeUp .6s ease forwards; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .35s; }
+  .delay-4 { animation-delay: .5s; }
+
+  /* ─── MAIN — full width; this page has no sidebar column ─── */
+  .main {
+    min-height: 100vh;
+  }
+
+  /* Shared tag chip — same component as the project cards on the home page */
+  .tag {
+    font-size: var(--fs-caption); color: var(--ink3);
+    border: 1px solid var(--line);
+    border-radius: 99px; padding: 3px 11px;
+  }
+
+/* =============================================================
+   CASE STUDY PAGE — page-specific styles
+   ============================================================= */
+
+  /* Top bar */
+  .cs-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .cs-topbar-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: var(--sp-4) var(--sp-5);
+  }
+  .cs-back {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: var(--fs-ui);
+    font-weight: 500;
+    color: var(--ink2);
+    transition: color 0.2s;
+  }
+  .cs-back:hover { color: var(--ink); }
+  .cs-back::before { content: '←'; }
+
+  /* Side navigation and image canvas */
+  .cs-layout {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--sp-5);
+    align-items: start;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: var(--sp-5) var(--sp-5) var(--sp-5);
+  }
+  .cs-side-nav {
+    position: sticky;
+    top: calc(3.5rem + var(--sp-6));
+    align-self: start;
+    height: fit-content;
+    overflow: visible;
+  }
+  .cs-index {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    overflow: visible;
+  }
+  .cs-index-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-2) 0 var(--sp-2) var(--sp-3);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+  }
+  .cs-index-num {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink3);
+    width: 1.65rem;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  .cs-index-label {
+    font-size: var(--fs-ui);
+    font-weight: 500;
+    color: var(--ink2);
+    transition: color 0.2s;
+  }
+  .cs-index-item:hover .cs-index-num,
+  .cs-index-item:hover .cs-index-label,
+  .cs-index-item.is-active .cs-index-num,
+  .cs-index-item.is-active .cs-index-label { color: var(--ink); }
+  .cs-index-item.is-active { border-left-color: #F6C54D; }
+
+  /* -------------------------------------------------------
+     Main images — full-width landscape stack
+     ------------------------------------------------------- */
+  .cs-images {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+
+  .cs-figure {
+    scroll-margin-top: 90px;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .cs-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 720px) {
+    .cs-topbar-inner { padding: var(--sp-3) var(--sp-4); }
+    .cs-layout { grid-template-columns: 1fr; gap: var(--sp-5); padding: var(--sp-5) var(--sp-5) var(--sp-5); }
+    .cs-side-nav {
+      display: none;
+      position: sticky;
+      top: 49px;
+      z-index: 40;
+      width: calc(100% + (var(--sp-4) * 2));
+      margin-inline: calc(var(--sp-4) * -1);
+      padding: var(--sp-2) var(--sp-4) 0;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+    }
+    .cs-index {
+      flex-flow: row nowrap;
+      gap: var(--sp-4);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: var(--sp-2);
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      touch-action: pan-x;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cs-index-item {
+      flex: 0 0 auto;
+      padding: var(--sp-1) 0;
+      border-left: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    .cs-index-item.is-active { border-bottom: 2px solid #F6C54D; }
+    .cs-figure { scroll-margin-top: 128px; }
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- ============================================================
+    STICKY TOP BAR — the page's only persistent nav; stays pinned
+    to the viewport on scroll. EDIT: back link text/href as needed.
+    ============================================================ -->
+  <div class="cs-topbar">
+    <div class="cs-topbar-inner">
+      <a href="index.html" class="cs-back">Back to portfolio</a>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="cs-layout">
+      <aside class="cs-side-nav">
+        <nav class="cs-index" aria-label="Case study sections">
+          <a href="#section-1" class="cs-index-item is-active" data-index="section-1"><span class="cs-index-num">00</span><span class="cs-index-label">Summary</span></a>
+          <a href="#section-3" class="cs-index-item" data-index="section-3"><span class="cs-index-num">01</span><span class="cs-index-label">Discovery</span></a>
+          <a href="#section-4" class="cs-index-item" data-index="section-4"><span class="cs-index-num">02</span><span class="cs-index-label">Diverge</span></a>
+          <a href="#section-5" class="cs-index-item" data-index="section-5"><span class="cs-index-num">03</span><span class="cs-index-label">Converge</span></a>
+          <a href="#section-6" class="cs-index-item" data-index="section-6"><span class="cs-index-num">04</span><span class="cs-index-label">Reframe</span></a>
+          <a href="#section-7" class="cs-index-item" data-index="section-7"><span class="cs-index-num">05</span><span class="cs-index-label">Solution</span></a>
+          <a href="#section-8" class="cs-index-item" data-index="section-8"><span class="cs-index-num">06</span><span class="cs-index-label">Validation</span></a>
+        </nav>
+      </aside>
+
+      <section class="cs-images">
+   
+        <!-- IMAGE 01 ─────────────────────────────────────────────── -->
+        <figure id="section-1" class="cs-figure">
+          <img src="CS1/1_cs1-1.jpg" alt="Case study image 1">
+        </figure>
+
+        <!-- IMAGE 02 ─────────────────────────────────────────────── -->
+        <figure id="section-2" class="cs-figure">
+          <img src="CS1/2_cs1-1.jpg" alt="Case study image 2">
+        </figure>
+
+        <!-- IMAGE 03 ─────────────────────────────────────────────── -->
+        <figure id="section-3" class="cs-figure">
+          <img src="CS1/3_cs1-1.jpg" alt="Case study image 3">
+        </figure>
+
+        <!-- IMAGE 04 ─────────────────────────────────────────────── -->
+        <figure id="section-4" class="cs-figure">
+          <img src="CS1/4_cs1-1.jpg" alt="Case study image 4">
+        </figure>
+
+        <!-- IMAGE 05 ─────────────────────────────────────────────── -->
+        <figure id="section-5" class="cs-figure">
+          <img src="CS1/5_cs1-1.jpg" alt="Case study image 5">
+        </figure>
+
+        <!-- IMAGE 06 ─────────────────────────────────────────────── -->
+        <figure id="section-6" class="cs-figure">
+          <img src="CS1/6_cs1-1.jpg" alt="Case study image 6">
+        </figure>
+
+        <!-- IMAGE 07 ─────────────────────────────────────────────── -->
+        <figure id="section-7" class="cs-figure">
+          <img src="CS1/7_cs1-1.jpg" alt="Case study image 7">
+        </figure>
+
+        <!-- IMAGE 08 ─────────────────────────────────────────────── -->
+        <figure id="section-8" class="cs-figure">
+          <img src="CS1/8_cs1-1.jpg" alt="Case study image 8">
+        </figure>
+
+        <!-- IMAGE 09 ─────────────────────────────────────────────── -->
+        <figure id="section-9" class="cs-figure">
+          <img src="CS1/9_cs1-1.jpg" alt="Case study image 9">
+        </figure>
+
+      </section>
+
+    </div>
+  </main>
+
+
+<script>
+  // ── Smooth scroll for all anchor links ───────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var id = this.getAttribute('href').slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Keep the side navigation in sync while its linked image is in view.
+  var indexItems = document.querySelectorAll('.cs-index-item[data-index]');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      indexItems.forEach(function(item) {
+        item.classList.toggle('is-active', item.dataset.index === entry.target.id);
+      });
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  indexItems.forEach(function(item) {
+    var target = document.getElementById(item.dataset.index);
+    if (target) observer.observe(target);
+  });
+</script>
+
+</body>
+</html>
