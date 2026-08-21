@@ -131,11 +131,11 @@
     }
     .cta-sub { font-size: var(--fs-ui); color: var(--ink3); margin-bottom: var(--sp-4); }
 
-    .cta-btns { display: flex; gap: 7px; }
+    .cta-btns { display: flex; gap: 8px; }
     .btn {
       font-family: var(--sans);
       font-size: var(--fs-ui); font-weight: 500;
-      padding: 7px 15px; border-radius: 6px;
+      padding: 8px 16px; border-radius: 12px;
       cursor: pointer; text-decoration: none;
       transition: background .15s, color .15s, opacity .15s;
       white-space: nowrap; display: inline-block;
@@ -164,8 +164,7 @@
 
     /* ─── PROJECT ENTRY ─── */
     .project {
-      display: block; text-decoration: none; color: inherit;
-      cursor: pointer;
+      display: block;
       /* NO border */
     }
 
@@ -177,6 +176,7 @@
     .proj-visual {
       width: 100%;
       aspect-ratio: 4 / 2.47;
+      border-radius: 8px;
       overflow: hidden;
       position: relative;
     }
@@ -184,7 +184,6 @@
       position: absolute; inset: 0;
       transition: transform .55s ease;
     }
-    .project:hover .proj-visual-inner { transform: scale(1.025); }
 
     .proj-bg-1 { background: linear-gradient(135deg,#161008 0%,#3D2800 55%,#5C3E00 100%); }
     .proj-bg-2 { background: linear-gradient(135deg,#0E0C08 0%,#2E2000 55%,#4A3400 100%); }
@@ -194,12 +193,12 @@
       width: 100%; height: 100%;
       object-fit: cover; z-index: 2;
     }
-    .proj-num {
+    /*.proj-num {
       position: absolute; top: 16px; left: 20px; z-index: 3;
       font-size: var(--fs-caption); font-weight: 600; letter-spacing: .09em;
       color: rgba(255,255,255,.45);
     }
-    /*.proj-watermark {
+    .proj-watermark {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%,-50%);
       z-index: 3; pointer-events: none;
@@ -221,7 +220,11 @@
 
     /* Text body — left padding matches proj-frame so edges align */
     .proj-body {
+      display: block;
       padding: var(--sp-5) var(--sp-5) var(--sp-6);
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
     }
     /* Caption exception: Title Case eyebrow, kept below 14px */
     .proj-type {
@@ -249,17 +252,17 @@
       border-radius: 99px; padding: 3px 11px;
     }
     .proj-link {
-      display: inline-flex; align-items: center; gap: 5px;
+      display: inline-flex; align-items: center; gap: 8px;
       font-size: var(--fs-ui); font-weight: 600;
       color: var(--ink);
       border: 1px solid var(--ink);
-      border-radius: 5px;
-      padding: 7px 13px;
+      border-radius: 8px;
+      padding: 8px 16px;
       transition: background .15s, color .15s;
     }
     .proj-link svg { transition: transform .15s; }
-    .project:hover .proj-link svg { transform: translateX(3px); }
-    .project:hover .proj-link { background: var(--ink); color: #fff; }
+    .proj-body:hover .proj-link svg { transform: translateX(3px); }
+    .proj-body:hover .proj-link { background: var(--ink); color: #fff; }
 
     /* Centred 600px container inside .main */
     .proj-inner {
@@ -372,7 +375,7 @@
     <div class="sidebar-meta">
       <div>
         <div class="meta-lbl">Currently</div>
-        <div class="meta-val">Lead Product Designer, ION</div>
+        <div class="meta-val">Lead Product Designer</div>
       </div>
       <div>
         <div class="meta-lbl">Location</div>
@@ -415,11 +418,12 @@
       © 2026 Nami Furukawa<br>
     </div>
   </aside>
+  
 
   <!-- ── MAIN ── -->
   <main class="main" id="portfolioGrid">
 
-    <a href="case-study-1.html" class="project" onclick="handleCardClick(event,'case-study-1.html')">
+    <div class="project">
       <div class="proj-inner">
       <div class="proj-frame">
         <div class="proj-visual">
@@ -434,7 +438,7 @@
           </span>
         </div>
       </div>
-      <div class="proj-body">
+      <a href="case-study-1.html" class="proj-body" onclick="handleCardClick(event,'case-study-1.html')">
         <div class="proj-type">Strategy · AI · Leadership</div>
         <div class="proj-title">From Problem Space to Winning Product</div>
         <div class="proj-desc">Led a team of strangers to a 2nd place hackathon win by staying in the problem space longer than every other team.</div>
@@ -449,13 +453,13 @@
           Read case study
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-      </div>
+      </a>
       </div><!-- /.proj-inner -->
-    </a>
+    </div>
 
     <div class="proj-sep"></div>
 
-    <a href="case-study-1.html" class="project">
+    <div class="project">
       <div class="proj-inner">
       <div class="proj-frame">
         <div class="proj-visual">
@@ -466,7 +470,7 @@
           <span class="proj-watermark">Trust</span>
         </div>
       </div>
-      <div class="proj-body">
+      <a href="case-study-1.html" class="proj-body">
         <div class="proj-type">UX Research · Strategy</div>
         <div class="proj-title">Designing Trust in Journalism</div>
         <div class="proj-desc">Brief: design a journalist profile. <br> Reframed: a trust infrastructure problem. <br> Outcome: "a revolutionary step for the newsroom."</div>
@@ -482,9 +486,9 @@
           Read case study
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-      </div>
+      </a>
       </div><!-- /.proj-inner -->
-    </a>
+    </div>
 
   </main>
 
