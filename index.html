@@ -69,7 +69,7 @@
       padding: var(--sp-5) var(--sp-5) var(--sp-5);
       display: flex; flex-direction: column;
       background: #FAFAFA;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow-y: auto;
       z-index: 10;
       opacity: 0; animation: fadeUp .7s ease forwards .05s;
@@ -209,10 +209,10 @@
     }*/
     .proj-lock-badge {
       position: absolute; bottom: 14px; right: 16px; z-index: 4;
-      display: flex; align-items: center; gap: 5px;
+      display: flex; align-items: center; gap: 6px;
       background: rgba(15,15,15,.7); backdrop-filter: blur(6px);
-      border-radius: 99px; padding: 5px 12px;
-      font-size: var(--fs-caption); font-weight: 600; letter-spacing: .03em;
+      border-radius: 99px; padding: 8px 12px;
+      font-size: var(--fs-caption); font-weight: 600; letter-spacing: .03em; line-height: 1;
       color: #fff; pointer-events: none;
       transition: opacity .3s;
     }
@@ -310,7 +310,7 @@
     .modal-sub { font-size: var(--fs-ui); color: var(--ink3); margin-bottom: var(--sp-5); line-height: 1.6; }
     .modal-input {
       width: 100%; background: #fff; border: 1px solid var(--line);
-      border-radius: 7px; padding: 11px 14px;
+      border-radius: 8px; padding: 11px 14px;
       font-family: var(--sans); font-size: var(--fs-ui); color: var(--ink);
       outline: none; transition: border-color .15s; margin-bottom: var(--sp-3);
     }
@@ -320,7 +320,7 @@
     .modal-error.show { display: block; }
     .modal-btn {
       width: 100%; background: var(--ink); color: #fff;
-      border: none; border-radius: 7px; padding: 12px;
+      border: none; border-radius: 8px; padding: 12px;
       font-family: var(--sans); font-size: var(--fs-ui); font-weight: 600;
       cursor: pointer; transition: opacity .15s;
     }
@@ -468,12 +468,16 @@
           </div>
           <span class="proj-num">02</span>
           <span class="proj-watermark">Trust</span>
+          <span class="proj-lock-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Password Protected
+          </span>
         </div>
       </div>
-      <a href="case-study-1.html" class="proj-body">
+      <a href="case-study-2.html" class="proj-body" onclick="handleCardClick(event,'case-study-2.html')">
         <div class="proj-type">UX Research · Strategy</div>
         <div class="proj-title">Designing Trust in Journalism</div>
-        <div class="proj-desc">Brief: design a journalist profile. <br> Reframed: a trust infrastructure problem. <br> Outcome: "a revolutionary step for the newsroom."</div>
+        <div class="proj-desc">Reframed "journalist profile" — into a source trust problem.<br>Convinced a notoriously hard-to-align editorial team before showing a single screen.</div>
         <!-- 
         <div class="proj-tags">
           <span class="tag">Reframing</span>
@@ -499,11 +503,11 @@
       <div class="modal-icon">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0F0F0F" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
-      <h3 class="modal-title">View case study</h3>
+      <h3 class="modal-title">Read case study</h3>
       <p class="modal-sub">Enter the password to access the full work. To request access, reach out via LinkedIn or email.</p>
       <input type="password" class="modal-input" id="passwordInput" placeholder="Enter password" onkeydown="if(event.key==='Enter') checkPassword()">
       <p class="modal-error" id="modalError">Incorrect password. Please try again.</p>
-      <button class="modal-btn" onclick="checkPassword()">Unlock portfolio</button>
+      <button class="modal-btn" onclick="checkPassword()">Unlock</button>
     </div>
   </div>
 
@@ -525,7 +529,7 @@
     function handleCardClick(e, href) {
       e.preventDefault();
       if (!isUnlocked) { pendingHref = href; openModal(); }
-      else { window.open(href, '_blank'); }
+      else { window.location.href = href; }
     }
 
     function checkPassword() {
@@ -533,8 +537,9 @@
         sessionStorage.setItem('portfolioUnlocked', 'true');
         isUnlocked = true;
         grid.classList.add('unlocked');
+        const destination = pendingHref;
         closeModal();
-        if (pendingHref) setTimeout(() => { window.open(pendingHref, '_blank'); pendingHref = null; }, 400);
+        if (destination) window.location.href = destination;
       } else {
         input.classList.add('error'); errorMsg.classList.add('show'); input.value=''; input.focus();
         setTimeout(() => { input.classList.remove('error'); errorMsg.classList.remove('show'); }, 2500);
