@@ -187,6 +187,7 @@
 
     .proj-bg-1 { background: linear-gradient(135deg,#161008 0%,#3D2800 55%,#5C3E00 100%); }
     .proj-bg-2 { background: linear-gradient(135deg,#0E0C08 0%,#2E2000 55%,#4A3400 100%); }
+    .proj-bg-3 { background: linear-gradient(135deg, #FAF8F5 0%, #EEE9DD 55%, #E3D8C0 100%); }
 
     .proj-visual img {
       position: absolute; inset: 0;
@@ -250,6 +251,12 @@
       font-size: var(--fs-caption); color: var(--ink3);
       border: 1px solid var(--line);
       border-radius: 99px; padding: 3px 11px;
+    }
+    .tag_nami {
+      font-size: var(--fs-ui); color: var(--ink2);
+      border: 1px solid var(--ink3);
+      border-radius: 8px;
+      padding: 8px 16px;
     }
     .proj-link {
       display: inline-flex; align-items: center; gap: 8px;
@@ -439,9 +446,9 @@
         </div>
       </div>
       <a href="case-study-1.html" class="proj-body" onclick="handleCardClick(event,'case-study-1.html')">
-        <div class="proj-type">Strategy · AI · Leadership</div>
+        <div class="proj-type">Strategy · LLM · Leadership</div>
         <div class="proj-title">From Problem Space to Winning Product</div>
-        <div class="proj-desc">Led a team of strangers to a 2nd place hackathon win by staying in the problem space longer than every other team.</div>
+        <div class="proj-desc">Led a team of strangers to a 2nd place in LLM hackathon by staying in the problem space longer than every other team.</div>
         <!-- 
         <div class="proj-tags">
           <span class="tag">Problem Framing</span>
@@ -493,6 +500,42 @@
       </a>
       </div><!-- /.proj-inner -->
     </div>
+    
+<div class="proj-sep"></div>
+
+    <div class="project">
+      <div class="proj-inner">
+      <div class="proj-frame">
+        <div class="proj-visual">
+          <div class="proj-visual-inner proj-bg-3">
+            <img src="HP-thumbnails/cs3.png" alt="AI ballet coach built to let you fail comfortably">
+          </div>
+          <span class="proj-num">02</span>
+          <span class="proj-watermark">Trust</span>
+          <!--  <span class="proj-lock-badge"> -->
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Password Protected
+          </span>
+        </div>
+      </div>
+      <a class="proj-body">
+        <div class="proj-type">AI · Emotinal Support</div>
+        <div class="proj-title">AI ballet coach built to let you fail comfortably</div>
+        <div class="proj-desc">Most ballet teachers learned from age 5, and never learned why an adult body can't do what theirs always could.<br>Watching with a parent's patience and a scientist's precision, correcting without judgement, 
+          so failing stops being the emotional blocker.</div>
+       
+        <div class="proj-tags">
+          <span class="tag_nami">Coming Soon</span>
+      
+        </div>
+      
+        <!-- 
+        <div class="proj-link">
+          Read case study
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        -->
+      </a>
 
   </main>
 
