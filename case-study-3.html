@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An AI Ballet Coach Built to Let You Fail Comfortably</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #F6C54D;
+    --ink: #0F0F0F;
+    --body-text: #2B2B2B;
+    --muted: #4A4A4A;
+    --faint: #9A9A9A;
+    --line: #EFEFEF;
+    --panel-alt: #F6F6F6;
+  }
+  * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; background: #fff; color: var(--ink); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--ink); }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid #E8E8E8; }
+  .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; }
+  .back-link { display: inline-flex; align-items: center; gap: .4rem; font-size: 14px; font-weight: 500; color: var(--muted); }
+
+  .shell { display: grid; grid-template-columns: 180px minmax(0,1fr); gap: 24px; align-items: start; max-width: 1280px; margin: 0 auto; padding: 24px; }
+  .sidenav { position: sticky; top: calc(3.5rem + 32px); align-self: start; height: fit-content; }
+  .index-nav { display: flex; flex-direction: column; gap: 8px; }
+  .index-item { display: flex; align-items: center; gap: 12px; padding: 8px 0 8px 12px; border-left: 2px solid transparent; }
+  .index-item.is-active { border-left-color: var(--yellow); }
+  .index-num { font-family: 'Fraunces', Georgia, serif; font-size: 1.05rem; color: var(--faint); width: 1.65rem; flex-shrink: 0; }
+  .index-label { font-size: 14px; font-weight: 500; color: var(--muted); }
+  .index-item.is-active .index-num, .index-item.is-active .index-label { color: var(--ink); }
+
+  .sections { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .card { border-radius: 12px; padding: clamp(24px,5vw,48px); scroll-margin-top: 90px; }
+  .card--white { background: #fff; border: 1px solid var(--line); }
+  .card--grey { background: var(--panel-alt); }
+
+  .title { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(2rem,3.6vw,3.1rem); line-height: 1.12; letter-spacing: -.01em; text-wrap: pretty; max-width: 20ch; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tag { border: 1px solid #C9C9C9; border-radius: 99px; padding: 6px 14px; font-size: 13px; font-weight: 500; color: var(--muted); }
+
+  .two-col { margin-top: clamp(32px,5vw,72px); display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: clamp(24px,4vw,56px); }
+  .block { max-width: 66ch; }
+  .eyebrow { font-size: 19px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .rule { width: 26px; height: 6px; border-radius: 99px; background: var(--yellow); margin: 8px 0; }
+  p { font-size: 18px; line-height: 1.6; }
+  .eyebrow, .cards-2up h3 { font-size: 18px !important; font-weight: 600 !important; text-transform: uppercase !important; letter-spacing: normal !important; }
+  .body-text { color: var(--body-text); text-wrap: pretty; }
+  .body-text + .body-text { margin-top: 16px; }
+
+  .split { display: grid; grid-template-columns: minmax(0,340px) minmax(0,1fr); gap: clamp(28px,4vw,56px); align-items: start; }
+  .split-label { font-family: 'Fraunces', Georgia, serif; font-size: clamp(2rem,3vw,2.6rem); font-weight: 500; color: #B8B8B8; line-height: 1.1; }
+  .split-lede { margin-top: 22px; font-weight: 600; color: var(--body-text); }
+  .split-copy { display: flex; flex-direction: column; gap: 16px; color: var(--body-text); text-wrap: pretty; }
+
+  .section-lede { margin-top: 14px; max-width: 70ch; color: var(--body-text); text-wrap: pretty; }
+  .section-note { margin-top: 16px; font-weight: 600; color: var(--body-text); }
+  .cards-2up { margin-top: clamp(28px,4vw,52px); display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: clamp(24px,4vw,56px); }
+  .cards-2up p { margin-top: 16px; color: var(--body-text); text-wrap: pretty; }
+
+  .closing-copy { margin-top: clamp(28px,4vw,52px); max-width: 70ch; display: flex; flex-direction: column; gap: clamp(20px,3vw,32px); }
+  .closing-quote { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: clamp(1.5rem,2.6vw,2rem); line-height: 1.25; letter-spacing: -.01em; text-wrap: pretty; }
+
+  @media (max-width: 1100px) {
+    .two-col, .split { grid-template-columns: minmax(0,1fr) !important; }
+  }
+  @media (max-width: 720px) {
+    .shell { grid-template-columns: minmax(0,1fr) !important; padding: 16px !important; }
+    .sidenav { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="back-link">← Back to portfolio</a>
+  </div>
+</div>
+
+<main class="shell">
+  <aside class="sidenav">
+    <nav class="index-nav" aria-label="Case study sections">
+      <a href="#section-1" class="index-item is-active" data-index="section-1"><span class="index-num">00</span><span class="index-label">TL;DR</span></a>
+      <a href="#section-2" class="index-item" data-index="section-2"><span class="index-num">01</span><span class="index-label">The Gap</span></a>
+      <a href="#section-3" class="index-item" data-index="section-3"><span class="index-num">02</span><span class="index-label">Real Problem</span></a>
+      <a href="#section-4" class="index-item" data-index="section-4"><span class="index-num">03</span><span class="index-label">Design Approach</span></a>
+      <!-- <a href="#section-5" class="index-item" data-index="section-5"><span class="index-num">04</span><span class="index-label">Testing</span></a> -->
+    </nav>
+  </aside>
+
+  <div class="sections">
+
+    <!-- 00 · TITLE + TL;DR + MY ROLE -->
+    <section id="section-1" class="card card--white">
+      <h1 class="title">An AI Ballet Coach Built to Let You Fail Comfortably</h1>
+      <div class="tags">
+        <span class="tag">Work in progress</span>
+        <span class="tag">AI</span>
+        <span class="tag">Emotional Design</span>
+        <span class="tag">Learning Design</span>
+      </div>
+
+      <div class="two-col">
+        <div class="block">
+          <h2 class="eyebrow">TL;DR</h2>
+          <div class="rule"></div>
+          <p class="body-text">Ballet teachers teach the way they were taught — when they started at the age of 5 and aim to perform professionally. I'm building an AI coach for the much larger group it ignores: adults who start late, want to genuinely improve, and need something the industry has never designed for. Not a better teacher. A safer place to fail.</p>
+        </div>
+        <div class="block">
+          <h2 class="eyebrow">My Role</h2>
+          <div class="rule"></div>
+          <p class="body-text"><strong>Founder &amp; Designer</strong> — Ballet has been my passion as both learner and teacher. AI makes it possible to bring the patience, repetition, and psychological safety of an exceptional one-to-one teacher to every adult learner.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · THE GAP -->
+    <section id="section-2" class="card card--grey">
+      <div class="split">
+        <div><p class="split-label">01 The Gap</p></div>
+        <div class="split-copy">
+          <p>Most ballet teachers began around the age of 5, absorbed technique through repetition before they can question it, and were trained to demonstrate — not diagnose. That's a reasonable model for professional-track students. It's a poor model for adult recreational learners, who have different bodies, different timelines, and a decade of compensations already built in from elsewhere.</p>
+          <p>The industry serves one student type and treats everyone else as a lower priority. </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · THE REAL PROBLEM -->
+    <section id="section-3" class="card card--white">
+      <div class="split">
+        <div>
+          <p class="split-label">02 The Real Problem</p>
+          <p class="split-lede" style="margin-top:36px">The technical gap matters less than the psychological one underneath it.</p>
+        </div>
+        <div class="split-copy">
+          <p>Adult learners carry self-consciousness a 5-year-old doesn't. In a group class, a correction is public. Getting something wrong in front of people who started decades earlier feels expensive — so adults under-try. They hold back from full commitment to the movement precisely because failing fully feels humiliating.</p>
+          <p>But full attempts — including the failed ones — are how technique is actually learned. Meanwhile, a teacher in a room of 20+ can give any 1 student perhaps 90 seconds of real attention per class. The two halves of the learning loop — psychological safety and repetition volume — are structurally missing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · THE DESIGN APPROACH -->
+    <section id="section-4" class="card card--grey">
+      <p class="split-label">03 The Design Approach</p>
+      <p class="section-lede" style="margin-top:36px">The MVP is scoped to one movement: the pirouette. It's the most mythologised step in ballet, the one adults fear most, and the one with the clearest mechanical basis.</p>
+      <p class="section-note">I'm treating this as two separate design problems, not one product:</p>
+
+      <div class="cards-2up">
+        <div>
+          <h3>The correction engine</h3>
+          <div class="rule"></div>
+          <p>A student uploads video of their turn. The system identifies the single most significant deviation from a physically grounded reference, explained in plain terms rather than ballet jargon. One diagnosis, one explanation, one at a time.</p>
+        </div>
+        <div>
+          <h3>The pedagogical behaviour layer</h3>
+          <div class="rule"></div>
+          <p>This is the harder and more important problem. The system needs an explicit point of view on tone: patient rather than clinical, encouraging failure rather than merely tolerating it, treating repetition as the point rather than a symptom of not getting it. Holding both precision and warmth simultaneously is a great design challenge.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · WHAT I'M TESTING -->
+    <section id="section-5" class="card card--white">
+      <p class="split-label">To Be Continued...</p>
+      <!-- <div class="closing-copy" style="margin-top:36px">
+        <p class="body-text">How much correction should be visual versus verbal. How to calibrate a reasonable reference range without professional dancer data. And how far the encouraging-failure tone can go before it stops feeling honest — because the moment it tips into empty positivity, the trust it's meant to build collapses.</p>
+        <p class="closing-quote">The gap I'm designing for isn't technical. It's the space between knowing what to do and feeling safe enough to try it badly, repeatedly, until you get it right.</p>
+      </div> -->
+    </section>
+
+  </div>
+</main>
+
+<script>
+  const items = Array.from(document.querySelectorAll('.index-item[data-index]'));
+  const sectionEls = items.map((item) => document.getElementById(item.dataset.index));
+  const setActive = (id) => items.forEach((item) => item.classList.toggle('is-active', item.dataset.index === id));
+  items.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      const el = document.getElementById(item.dataset.index);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const THRESHOLD = 100; // px below sticky header where a section "counts" as current
+  let ticking = false;
+  function updateActive() {
+    ticking = false;
+    let current = sectionEls[0];
+    for (const el of sectionEls) {
+      if (!el) continue;
+      if (el.getBoundingClientRect().top - THRESHOLD <= 0) current = el;
+    }
+    if (current) setActive(current.id);
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateActive); }
+  }, { passive: true });
+  window.addEventListener('resize', updateActive);
+  updateActive();
+</script>
+</body>
+</html>
